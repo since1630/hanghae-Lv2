@@ -6,7 +6,7 @@ const Comments = require("../schemas/comments");
 router.get("/:_postId/comments", async (req, res) => {
   try {
     const comments = await Comments.find({}).sort({ createdAt: -1 });
-    let new_comments = comments.map((comment) => {
+    const new_comments = comments.map((comment) => {
       return {
         commentId: comment["_id"], //* comment의 기본키(_id)를 CommentId에 담기 위한 작업
         user: comment["user"],

@@ -5,8 +5,8 @@ const Posts = require("../schemas/posts");
 //게시글 전체 조회
 router.get("/", async (req, res) => {
   try {
-    const data = await Posts.find({}).sort({ createdAt: -1 });
-    const new_data = data.map((post) => {
+    const posts = await Posts.find({}).sort({ createdAt: -1 });
+    const new_posts = posts.map((post) => {
       return {
         postId: post["_id"],
         user: post["user"],
@@ -15,7 +15,7 @@ router.get("/", async (req, res) => {
       };
     });
 
-    return res.status(200).json({ data: new_data });
+    return res.status(200).json({ data: new_posts });
   } catch (err) {
     console.log(err);
   }
@@ -25,8 +25,8 @@ router.get("/", async (req, res) => {
 router.get("/:_postId", async (req, res) => {
   try {
     const { _postId } = req.params;
-    const data = await Posts.find({ _id: _postId });
-    const new_data = data.map((post) => {
+    const posts = await Posts.find({ _id: _postId });
+    const new_posts = posts.map((post) => {
       return {
         postId: post["_id"],
         user: post["user"],
@@ -35,13 +35,13 @@ router.get("/:_postId", async (req, res) => {
       };
     });
 
-    if (Object.keys(req.params).length === 0 || new_data.length === 0) {
+    if (Object.keys(req.params).length === 0 || new_posts.length === 0) {
       // params 받지 못했거나 해당 params에 해당하는 데이터가 없을떄 400 반환. req.body를 체크하려하면 예제랑 다른 결과가 만들어져서 작성x.
       return res
         .status(400)
         .json({ message: "데이터 형식이 올바르지 않습니다" });
     }
-    res.status(200).json({ data: new_data });
+    res.status(200).json({ data: new_posts });
   } catch (err) {
     console.error(err);
   }
