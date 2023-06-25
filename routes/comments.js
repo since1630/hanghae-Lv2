@@ -14,10 +14,7 @@ router.get("/:_postId/comments", async (req, res) => {
         createdAt: comment["createdAt"],
       };
     });
-    if (
-      Object.keys(req.params).length === 0 ||
-      Object.keys(req.body).length === 0
-    )
+    if (Object.keys(req.params).length === 0 || new_comments.length === 0)
       return res
         .status(400)
         .json({ message: "데이터 형식이 올바르지 않습니다" });
@@ -55,6 +52,8 @@ router.put("/:_postId/comments/:_commentId", async (req, res) => {
   try {
     const { _commentId } = req.params;
     const { password, content } = req.body;
+    const comments = await Comments.find({ _id: _commentId });
+
     if (
       Object.keys(req.body).length === 0 ||
       Object.keys(req.params).length === 0
@@ -64,7 +63,7 @@ router.put("/:_postId/comments/:_commentId", async (req, res) => {
         .json({ message: "데이터 형식이 올바르지 않습니다" });
     } else if (!content) {
       return res.status(400).json({ message: "댓글 내용을 입력해주세요" });
-    } else if (!_commentId) {
+    } else if (!comments.length) {
       return res
         .status(404)
         .json({ message: "{ message: '댓글 조회에 실패하였습니다. }" });
@@ -84,8 +83,8 @@ router.delete("/:_postId/comments/:_commentId", async (req, res) => {
   try {
     const { password, _commentId } = req.params;
     // const { password } = req.body;
-    const data = await Comments.find({ _id: _commentId });
-    console.log(data);
+    const comments = await Comments.find({ _id: _commentId });
+
     if (
       Object.keys(req.body).length === 0 ||
       Object.keys(req.params).length === 0
@@ -93,7 +92,7 @@ router.delete("/:_postId/comments/:_commentId", async (req, res) => {
       return res
         .status(400)
         .json({ message: "데이터 형식이 올바르지 않습니다" });
-    } else if (!data.length)
+    } else if (!comments.length)
       // _commentId(자원) 에 해당하는 값을 찾지 못했으므로 404코드.
       return res.status(404).json({ message: "댓글 조회에 실패했습니다" });
 
