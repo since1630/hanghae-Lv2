@@ -69,7 +69,7 @@ router.put("/:_postId/comments/:_commentId", async (req, res) => {
       { _id: _commentId },
       { $set: { password, content } }
     );
-    return res.status(201).json({ message: "댓글을 수정하였습니다" });
+    return res.status(204).json({ message: "댓글을 수정하였습니다" }); // 상태코드 수정 201 -> 204
   } catch (err) {
     console.error(err);
   }
@@ -92,7 +92,7 @@ router.delete("/:_postId/comments/:_commentId", async (req, res) => {
       return res.status(404).json({ message: "댓글 조회에 실패했습니다" });
 
     await Comments.deleteOne({ _id: _commentId });
-    return res.status(200).json({ message: "댓글을 삭제하였습니다" });
+    return res.status(204).json({ message: "댓글을 삭제하였습니다" });
   } catch (err) {
     console.error(err);
   }

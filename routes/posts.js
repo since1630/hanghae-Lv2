@@ -88,7 +88,7 @@ router.put("/:_postId", async (req, res) => {
         { _id: _postId },
         { $set: { password, title, content } }
       );
-      return res.status(201).json({ message: "게시글을 수정하였습니다" });
+      return res.status(204).json({ message: "게시글을 수정하였습니다" }); // 상태코드 수정 201 -> 204
     } else if (!posts.length) {
       return res.status(404).json({ message: "게시글 조회에 실패하였습니다." });
     }
@@ -102,7 +102,8 @@ router.delete("/:_postId", async (req, res) => {
   try {
     const { _postId } = req.params;
     const { password } = req.body;
-    if (!_postId === 0 || !password)
+    // TODO: 수정
+    if (!_postId || !password)
       return res
         .status(400)
         .json({ message: "데이터 형식이 올바르지 않습니다." });
@@ -114,7 +115,7 @@ router.delete("/:_postId", async (req, res) => {
     else if (!posts.length)
       return res.status(404).json({ message: "게시글 조회에 실패하였습니다." });
 
-    return res.status(200).json({ message: "게시글을 삭제하였습니다" });
+    return res.status(204).json({ message: "게시글을 삭제하였습니다" });
   } catch (err) {
     console.error(err);
   }
