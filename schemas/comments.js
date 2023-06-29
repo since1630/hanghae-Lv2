@@ -3,27 +3,20 @@ const mongoose = require("mongoose");
 
 const commentsSchema = new mongoose.Schema(
   {
-    _postId: {
+    userId: {
       type: String,
       required: true,
     },
-    user: {
+    nickname: {
       type: String,
       required: true,
     },
-    password: {
+    comment: {
       type: String,
       required: true,
-    },
-    content: {
-      type: String,
-      required: true,
-    },
-    createdAt: {
-      type: Date,
-      default: Date.now,
     },
   },
+  { timestamps: true },
   { versionKey: false }
 );
 
